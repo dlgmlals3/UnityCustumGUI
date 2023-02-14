@@ -1,0 +1,12 @@
+.header {
+    color: rgba(20, 38, 255, 255);
+    background-color: rgba(173, 159, 35, 255);
+    font-size: 38px;
+}
+
+.toggle {
+}
+
+.toggle:checked {
+    opacity: 0.5;
+}
