@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Dlgmlals3/TaskList/Editor/EditorWindow/TaskListEditor.uss?fileID=7433441132597879392&amp;guid=dfbd2561010efd942ab0f9ad3769a40f&amp;type=3#TaskListEditor" />
+    <ui:VisualElement name="LoadingTasks" class="container">
+        <uie:ObjectField label="Load Saved Tasks" name="savedTasksObjectField" class="header" style="margin-left: 11px; margin-right: 11px; margin-top: 11px; margin-bottom: 11px;" />
+        <ui:Button text="Load Tasks" display-tooltip-when-elided="true" name="loadTasksButton" class="button" style="-unity-text-align: middle-center;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="AddingTasks" class="container">
+        <ui:Label text="Add new Task" display-tooltip-when-elided="true" name="AddTasksHeader" class="header" />
+        <ui:VisualElement name="AddTaskContainer" style="flex-direction: row; flex-grow: 1; flex-wrap: wrap;">
+            <ui:TextField picking-mode="Ignore" text="new Tasks..." name="taskText" class="header" style="width: 80%;" />
+            <ui:Button text="Add" display-tooltip-when-elided="true" name="addTaskButton" class="button" style="width: 70px; margin-left: 10px; margin-right: 0; margin-top: 0; margin-bottom: 0;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement name="DisplayTasks" class="container expand">
+        <ui:Label text="Current Tasks" display-tooltip-when-elided="true" class="header" style="-unity-text-align: upper-center;" />
+        <ui:ScrollView name="taskList" class="border" style="height: auto; flex-grow: 1;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="TrackingTasks" class="container">
+        <ui:Button text="Save Progress" display-tooltip-when-elided="true" name="saveProgressButton" class="header button" style="-unity-text-align: middle-center;" />
+        <ui:ProgressBar title="my-progress" name="taskProgress" style="height: auto; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; -unity-text-align: middle-center; align-items: stretch; min-height: auto; justify-content: center; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+    </ui:VisualElement>
+</ui:UXML>
