@@ -12,13 +12,14 @@ namespace Dlgmlals3.Tasks
 		VisualElement container;
 		ObjectField savedTasksObjectField;
 		Button loadTasksButton;
-
 		TextField taskText;
 		Button addTaskButton;
 		ScrollView taskListScrollView;
-
+		ToolbarSearchField searchBox;
+		Button saveProgressButton;
+		ProgressBar taskProgressBar;
+		Label notificationLabel;
 		TaskListSO taskListSO;
-
 
 		public const string path = "Assets/Dlgmlals3/TaskList/Editor/EditorWindow/";
 		[MenuItem("Dlgmlals3/Task List")]
@@ -51,10 +52,14 @@ namespace Dlgmlals3.Tasks
 			addTaskButton.clicked += AddTask;
 
 			taskListScrollView = container.Q<ScrollView>("taskList");
+			saveProgressButton = container.Q<Button>("saveProgressButton");
+			saveProgressButton.clicked += SaveProgress;
+			taskProgressBar = container.Q<ProgressBar>("taskProgressBar");
+			searchBox = container.Q<ToolbarSearchField>("searchBox");
+			searchBox.RegisterValueChangedCallback(OnSearchTextChange);
 
-			Debug.Log(taskText);
-			Debug.Log(addTaskButton);
-			Debug.Log(taskListScrollView);
+			notificationLabel = container.Q<Label>("notificationLabel");
+			UpdateNotification("Please load a task list to continue");
 		}
 
 		void AddTask()
@@ -65,13 +70,16 @@ namespace Dlgmlals3.Tasks
 				SaveTask(taskText.value);
 				taskText.value = "";
 				taskText.Focus();
+				UpdateProgress();
+				UpdateNotification("Task added successfully");
 			}
 		}
 
-		private Toggle CreateTask(string taskText)
+		TaskItem CreateTask(string taskText)
 		{
-			Toggle taskItem = new Toggle();
-			taskItem.text = taskText;
+			TaskItem taskItem = new TaskItem(taskText);
+			taskItem.GetTaskLabel().text = taskText;
+			taskItem.GetTaskToggle().RegisterValueChangedCallback(UpdateProgress);
 			return taskItem;
 		}
 
@@ -94,6 +102,12 @@ namespace Dlgmlals3.Tasks
 				{
 					taskListScrollView.Add(CreateTask(task));
 				}
+				UpdateProgress();
+				UpdateNotification(taskListSO.name + " successfully Loaded.");
+			}
+			else
+			{
+				UpdateNotification("Failed to load task list");
 			}
 		}
 
@@ -103,7 +117,84 @@ namespace Dlgmlals3.Tasks
 			EditorUtility.SetDirty(taskListSO);
 			AssetDatabase.SaveAssets();
 			AssetDatabase.Refresh();
+			UpdateNotification("Task Added Successfully");
 		}
 
+		void SaveProgress()
+		{
+			if (taskListSO != null)
+			{
+				List<string> tasks = new List<string>();
+
+				foreach (TaskItem task in taskListScrollView.Children())
+				{
+					if (!task.GetTaskToggle().value)
+					{
+						tasks.Add(task.GetTaskLabel().text);
+					}
+				}
+				taskListSO.AddTasks(tasks);
+				EditorUtility.SetDirty(taskListSO);
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
+				LoadTasks();
+				UpdateNotification("Task Added Successfully");
+			}
+		}
+
+		void UpdateProgress()
+		{
+			int count = 0;
+			int completed = 0;
+
+			foreach (TaskItem task in taskListScrollView.Children())
+			{
+				if (task.GetTaskToggle().value)
+				{
+					completed++;
+				}
+				count++;
+			}
+			if (count > 0)
+			{
+				float progress = completed / (float)count;
+				taskProgressBar.value = progress;
+				taskProgressBar.title = string.Format("{0} %", (Mathf.Round(progress * 1000) / 10f));
+				UpdateNotification("Progress updated. Don't forget to save!");
+			} else
+			{
+				taskProgressBar.value = 1;
+				taskProgressBar.title = string.Format("{0} %", 100);
+			}
+		}
+
+		void UpdateProgress(ChangeEvent<bool> e)
+		{
+			UpdateProgress();
+		}
+
+		void OnSearchTextChange(ChangeEvent<string> changeEvent)
+		{
+			string searchText = changeEvent.newValue.ToUpper();
+			foreach (TaskItem task in taskListScrollView.Children())
+			{
+				string taskText = task.GetTaskLabel().text.ToUpper();
+				if (!string.IsNullOrEmpty(searchText) && taskText.Contains(searchText))
+				{
+					task.GetTaskLabel().AddToClassList("highlight");
+				} else
+				{
+					task.GetTaskLabel().RemoveFromClassList("highlight");
+				}
+			}
+		}
+
+		void UpdateNotification(string text)
+		{
+			if (!string.IsNullOrEmpty(text))
+			{
+				notificationLabel.text = text;
+			}
+		}
 	}
 }

@@ -1,15 +1,28 @@
 .container {
-    margin-left: 7px;
-    margin-right: 7px;
-    margin-top: 7px;
-    margin-bottom: 7px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .button {
     margin-left: -5px;
     margin-right: -5px;
     min-height: 40px;
-    background-color: rgba(52, 113, 58, 255);
+    background-color: rgb(77, 77, 77);
+    -unity-background-scale-mode: stretch-to-fill;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    color: rgba(210, 210, 210, 255);
+}
+
+.button2 {
+    margin-left: -5px;
+    margin-right: -5px;
+    min-height: 25px;
+    background-color: rgb(52, 113, 58);
     -unity-background-scale-mode: stretch-to-fill;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
@@ -19,7 +32,7 @@
 
 .header {
     -unity-text-align: upper-center;
-    font-size: 15px;
+    font-size: 12px;
 }
 
 .background {
@@ -39,12 +52,24 @@
     border-right-width: 1px;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
     margin-left: 4px;
     margin-right: 4px;
     margin-top: 4px;
     margin-bottom: 4px;
+}
+
+.highlight {
+    color: rgba(250, 249, 17, 255);
+}
+
+.notification {
+    font-size: 10px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
 }
